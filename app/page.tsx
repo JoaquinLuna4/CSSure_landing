@@ -10,6 +10,40 @@ import { TermsModal } from "@/components/TermsModal";
 export default function HomePage() {
 	const [isTermsChecked, setIsTermsChecked] = useState(false);
 	const [isTermsOpen, setIsTermsOpen] = useState(false);
+	const [email, setEmail] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [error, setError] = useState('');
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!isTermsChecked || !email) return;
+
+		setIsSubmitting(true);
+		setError('');
+
+		try {
+			const response = await fetch('https://formspree.io/f/xeolqgla', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email }),
+			});
+
+			if (response.ok) {
+				setIsSubmitted(true);
+				setEmail('');
+				setIsTermsChecked(false);
+			} else {
+				throw new Error('Failed to submit form');
+			}
+		} catch (err) {
+			setError('Failed to submit. Please try again.');
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
 	return (
 		<div className="min-h-screen" style={{ backgroundColor: "#21323B" }}>
 			{/* Hero Section */}
@@ -33,26 +67,30 @@ export default function HomePage() {
 
 					{/* Waitlist Form */}
 					<div className="max-w-md mx-auto">
-						<form className="flex flex-col sm:flex-row gap-3">
+						<form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
 							<Input
 								type="email"
-								placeholder="tu@email.com"
+								placeholder="Your email address"
 								className="flex-1 h-12 text-lg border-2"
 								style={{ borderColor: "#B8DBD9", backgroundColor: "white" }}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								required
+								disabled={isSubmitting || isSubmitted}
 							/>
 							<Button
 								type="submit"
 								size="lg"
-								className="h-12 px-8 text-lg font-semibold text-white hover:opacity-90 transition-opacity"
+								className="h-12 px-8 text-lg font-semibold hover:opacity-90 transition-opacity"
 								style={{
-									backgroundColor: isTermsChecked ? "#B8DBD9" : "#586F7C",
+									backgroundColor: isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
 									color: "#21323B",
-									cursor: isTermsChecked ? "pointer" : "not-allowed",
-									opacity: isTermsChecked ? 1 : 0.7,
+									cursor: isTermsChecked && !isSubmitted && !isSubmitting ? "pointer" : "not-allowed",
+									opacity: isTermsChecked && !isSubmitted ? 1 : 0.7,
 								}}
-								disabled={!isTermsChecked}
+								disabled={!isTermsChecked || isSubmitting || isSubmitted}
 							>
-								Join Waitlist
+								{isSubmitting ? 'Submitting...' : isSubmitted ? 'Thank you!' : 'Join Waitlist'}
 							</Button>
 						</form>
 						<div className="mt-4 flex items-start">
@@ -62,6 +100,7 @@ export default function HomePage() {
 								checked={isTermsChecked}
 								onChange={(e) => setIsTermsChecked(e.target.checked)}
 								className="mt-1 mr-2"
+								disabled={isSubmitting || isSubmitted}
 							/>
 							<label htmlFor="terms" className="text-sm text-gray-300">
 								I agree to the{" "}
@@ -69,14 +108,22 @@ export default function HomePage() {
 									type="button"
 									onClick={() => setIsTermsOpen(true)}
 									className="text-blue-300 hover:underline"
+									disabled={isSubmitting || isSubmitted}
 								>
 									Terms & Privacy Policy
 								</button>
 							</label>
 						</div>
-						<p className="text-xs text-gray-400 mt-3">
-							No spam, ever. We'll only send you relevant updates.
-						</p>
+						{error && <p className="text-sm text-red-400 mt-2">{error}</p>}
+						{isSubmitted ? (
+							<p className="text-sm text-green-400 mt-2">
+								Thank you for joining our waitlist! We'll be in touch soon.
+							</p>
+						) : (
+							<p className="text-xs text-gray-400 mt-3">
+								No spam, ever. We'll only send you relevant updates.
+							</p>
+						)}
 					</div>
 				</div>
 			</section>
@@ -289,9 +336,9 @@ export default function HomePage() {
 									With more than 8 years of experience in software development
 									and a deep specialization in product architecture, Gastón is
 									the technical brain of CSSure. His extensive experience in the
-									industry has given him the vision necessary to build a robust
+									industry has given him the necessary vision to build a robust
 									and scalable tool that not only solves the current problem,
-									but is ready for the future.
+									also is ready for the future.
 								</p>
 							</CardContent>
 						</Card>
@@ -318,12 +365,13 @@ export default function HomePage() {
 									Joaquin Luna
 								</h3>
 								<p className="leading-relaxed" style={{ color: "#586F7C" }}>
-									With more than 8 years of experience in software development
-									and a deep specialization in product architecture, Joaquín is
-									the technical brain of CSSure. His extensive experience in the
-									industry has given him the vision necessary to build a robust
-									and scalable tool that not only solves the current problem,
-									but is ready for the future.
+									As a software developer with a passion for design, Joaquín
+									focuses on translating technical complexity into a fluid and
+									intuitive user experience. His mission is to ensure that
+									CSSure not only works flawlessly but is also incredibly easy
+									and enjoyable to use. His agile approach and knack for
+									combining aesthetics with functionality are key to bringing
+									the product vision to life.
 								</p>
 							</CardContent>
 						</Card>

@@ -17,8 +17,7 @@ export const metadata: Metadata = {
 		icon: "/favicon.png",
 	},
 	description:
-		"Herramienta simple y accesible para validar y limpiar tu código HTML, garantizando que tus emails se vean perfectos en todos los clientes.",
-	generator: "v0.app",
+		"A simple and accessible tool for validating and cleaning your HTML code, ensuring your emails look perfect on all clients",
 };
 
 export default function RootLayout({
@@ -37,7 +36,10 @@ export default function RootLayout({
 					}
 				`}</style>
 			</head>
-			<body>{children}</body>
+			<body>
+				{children}
+				<Analytics />
+			</body>
 		</html>
 	);
 }
