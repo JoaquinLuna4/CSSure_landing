@@ -17,13 +17,18 @@ export default function HomePage() {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!isTermsChecked || !email) return;
+		if (!isTermsChecked || !email) {
+			console.log('Form validation failed - missing terms acceptance or email');
+			return;
+		}
 
 		setIsSubmitting(true);
 		setError('');
 
 		try {
-			const response = await fetch('https://formspree.io/f/xeolqgla', {
+			console.log('Sending request to /api/subscribe with email:', email);
+			
+			const response = await fetch('/api/subscribe', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -31,15 +36,23 @@ export default function HomePage() {
 				body: JSON.stringify({ email }),
 			});
 
+			const data = await response.json();
+			console.log('API Response:', { status: response.status, data });
+
 			if (response.ok) {
+				console.log('Form submitted successfully');
 				setIsSubmitted(true);
 				setEmail('');
 				setIsTermsChecked(false);
 			} else {
-				throw new Error('Failed to submit form');
+				const errorMsg = data.error || 'Failed to submit form';
+				console.error('Form submission failed:', errorMsg);
+				throw new Error(errorMsg);
 			}
 		} catch (err) {
-			setError('Failed to submit. Please try again.');
+			const errorMessage = err instanceof Error ? err.message : 'Failed to submit. Please try again.';
+			console.error('Error in form submission:', err);
+			setError(errorMessage);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -320,17 +333,17 @@ export default function HomePage() {
 									style={{ backgroundColor: "#F4F4F9" }}
 								>
 									<img
-										src="https://ui-avatars.com/api/?name=Ana+Martinez&background=586F7C&color=fff&size=80"
-										alt="Ana Martínez"
-										className="w-full h-full object-cover rounded-full"
-									/>
+									src="/GastonProfile.jfif"
+									alt="Gastón Arévalo"
+									className="w-full h-full object-cover rounded-full"
+								/>
 								</div>
 
 								<h3
 									className="text-2xl font-bold mb-4"
 									style={{ color: "#586F7C" }}
 								>
-									Gaston Arevalo
+									Gastón Arévalo
 								</h3>
 								<p className="leading-relaxed" style={{ color: "#586F7C" }}>
 									With more than 8 years of experience in software development
@@ -353,16 +366,16 @@ export default function HomePage() {
 									style={{ backgroundColor: "#F4F4F9" }}
 								>
 									<img
-										src="https://ui-avatars.com/api/?name=Carlos+Garcia&background=586F7C&color=fff&size=80"
-										alt="Carlos Garcia"
-										className="w-full h-full object-cover rounded-full"
-									/>
+									src="/JoaquinProfile.jpeg"
+									alt="Joaquín Luna"
+									className="w-full h-full object-cover rounded-full"
+								/>
 								</div>
 								<h3
 									className="text-2xl font-bold mb-4"
 									style={{ color: "#586F7C" }}
 								>
-									Joaquin Luna
+									Joaquín Luna
 								</h3>
 								<p className="leading-relaxed" style={{ color: "#586F7C" }}>
 									As a software developer with a passion for design, Joaquín
@@ -399,42 +412,48 @@ export default function HomePage() {
 						</p>
 					</div>
 					<div className="max-w-md mx-auto">
-						<form className="flex flex-col sm:flex-row gap-3">
+						<form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
 							<Input
 								type="email"
 								placeholder="Your email address"
 								className="flex-1 h-12 text-lg border-2"
 								style={{ borderColor: "#B8DBD9", backgroundColor: "white" }}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								required
+								disabled={isSubmitting || isSubmitted}
 							/>
 							<Button
 								type="submit"
 								size="lg"
 								className="h-12 px-8 text-lg font-semibold hover:opacity-90 transition-opacity"
 								style={{
-									backgroundColor: isTermsChecked ? "#B8DBD9" : "#586F7C",
+									backgroundColor: isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
 									color: "#21323B",
-									cursor: isTermsChecked ? "pointer" : "not-allowed",
-									opacity: isTermsChecked ? 1 : 0.7,
+									cursor: isTermsChecked && !isSubmitted && !isSubmitting ? "pointer" : "not-allowed",
+									opacity: isTermsChecked && !isSubmitted ? 1 : 0.7,
 								}}
-								disabled={!isTermsChecked}
+								disabled={!isTermsChecked || isSubmitting || isSubmitted}
 							>
-								Join Waitlist
+								{isSubmitting ? 'Submitting...' : isSubmitted ? 'Thank you!' : 'Join Waitlist'}
 							</Button>
 						</form>
 						<div className="mt-4 flex items-start">
 							<input
 								type="checkbox"
-								id="terms"
+								id="terms-bottom"
 								checked={isTermsChecked}
 								onChange={(e) => setIsTermsChecked(e.target.checked)}
 								className="mt-1 mr-2"
+								disabled={isSubmitting || isSubmitted}
 							/>
-							<label htmlFor="terms" className="text-sm text-gray-300">
+							<label htmlFor="terms-bottom" className="text-sm text-gray-300">
 								I agree to the{" "}
 								<button
 									type="button"
 									onClick={() => setIsTermsOpen(true)}
 									className="text-blue-300 hover:underline"
+									disabled={isSubmitting || isSubmitted}
 								>
 									Terms & Privacy Policy
 								</button>
