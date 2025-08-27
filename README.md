@@ -1,30 +1,73 @@
-# No conversation
+# CSSure - Email Validation Tool
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/joaquinluna4s-projects/v0-css-ure-landing)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/GMcKMejUfRl)
+[![Live Demo](https://img.shields.io/badge/Visit%20Website-cssure.online-4CAF50?style=for-the-badge&logo=vercel)](https://cssure.online)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+CSSure is a powerful email validation tool that helps ensure your HTML emails look perfect across all email clients and devices. Our solution helps developers and designers avoid common rendering issues in email clients like Outlook and mobile devices.
+
+## Features
+
+- 🔍 Email HTML validation
+- 📱 Mobile-responsive email testing
+- 🎨 CSS inlining and optimization
+- 📊 Comprehensive email client compatibility reports
+- ⚡ Fast and reliable processing
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16.14.0 or later
+- pnpm
+- Resend API key (for email functionality)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/CSSure_landing.git
+   cd CSSure_landing
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Create a `.env.local` file in the root directory and add your Resend API key:
+   ```
+   RESEND_API_KEY=re_your_api_key_here
+   ```
+
+4. Run the development server:
+   ```bash
+   pnpm dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment
 
-Your project is live at:
+The application is deployed at [https://cssure.online](https://cssure.online)
 
-**[https://vercel.com/joaquinluna4s-projects/v0-css-ure-landing](https://vercel.com/joaquinluna4s-projects/v0-css-ure-landing)**
+## Built With
 
-## Build your app
+- [Next.js](https://nextjs.org/) - The React Framework
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [Resend](https://resend.com/) - Email API for sending transactional emails
+- [shadcn/ui](https://ui.shadcn.com/) - Beautifully designed components
 
-Continue building your app on:
+## Contributing
 
-**[https://v0.app/chat/projects/GMcKMejUfRl](https://v0.app/chat/projects/GMcKMejUfRl)**
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## How It Works
+## License
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+- Joaquín Luna - [@yourtwitter](https://twitter.com/yourtwitter)
+- Project Link: [https://github.com/yourusername/CSSure_landing](https://github.com/yourusername/CSSure_landing)
