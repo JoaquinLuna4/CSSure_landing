@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trackButtonClick, trackFormSubmission, trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,8 +18,12 @@ export default function HomePage() {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		
+		trackButtonClick('submit_button');
+		
 		if (!isTermsChecked || !email) {
 			console.log("Form validation failed - missing terms acceptance or email");
+			trackEvent('form_validation_failed', 'engagement', 'missing_terms_or_email');
 			return;
 		}
 
@@ -42,6 +47,7 @@ export default function HomePage() {
 			if (response.ok) {
 				console.log("Form submitted successfully");
 				setIsSubmitted(true);
+				trackFormSubmission('waitlist_form', email);
 				setEmail("");
 				setIsTermsChecked(false);
 			} else {

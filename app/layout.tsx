@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -39,6 +40,9 @@ export default function RootLayout({
 			<body>
 				{children}
 				<Analytics />
+				<GoogleAnalytics
+					gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""}
+				/>
 			</body>
 		</html>
 	);
