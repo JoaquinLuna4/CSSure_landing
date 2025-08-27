@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -22,6 +28,21 @@ export async function POST(request: Request) {
     }
 
     console.log('Attempting to send email to:', email);
+    
+    // Save email to Supabase
+    const { data: insertData, error: insertError } = await supabase
+      .from('Suscribers')
+      .insert([{ email }]);
+
+    if (insertError) {
+      console.error('Error saving email to Supabase:', insertError);
+      return NextResponse.json(
+        { error: 'Failed to save email' },
+        { status: 500 }
+      );
+    }
+    
+    console.log('Email saved to Supabase:', insertData);
     
     // Send email using Resend
     const emailData = {

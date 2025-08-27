@@ -10,48 +10,51 @@ import { TermsModal } from "@/components/TermsModal";
 export default function HomePage() {
 	const [isTermsChecked, setIsTermsChecked] = useState(false);
 	const [isTermsOpen, setIsTermsOpen] = useState(false);
-	const [email, setEmail] = useState('');
+	const [email, setEmail] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!isTermsChecked || !email) {
-			console.log('Form validation failed - missing terms acceptance or email');
+			console.log("Form validation failed - missing terms acceptance or email");
 			return;
 		}
 
 		setIsSubmitting(true);
-		setError('');
+		setError("");
 
 		try {
-			console.log('Sending request to /api/subscribe with email:', email);
-			
-			const response = await fetch('/api/subscribe', {
-				method: 'POST',
+			console.log("Sending request to /api/subscribe with email:", email);
+
+			const response = await fetch("/api/subscribe", {
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ email }),
 			});
 
 			const data = await response.json();
-			console.log('API Response:', { status: response.status, data });
+			console.log("API Response:", { status: response.status, data });
 
 			if (response.ok) {
-				console.log('Form submitted successfully');
+				console.log("Form submitted successfully");
 				setIsSubmitted(true);
-				setEmail('');
+				setEmail("");
 				setIsTermsChecked(false);
 			} else {
-				const errorMsg = data.error || 'Failed to submit form';
-				console.error('Form submission failed:', errorMsg);
+				const errorMsg = data.error || "Failed to submit form";
+				console.error("Form submission failed:", errorMsg);
 				throw new Error(errorMsg);
 			}
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : 'Failed to submit. Please try again.';
-			console.error('Error in form submission:', err);
+			const errorMessage =
+				err instanceof Error
+					? err.message
+					: "Failed to submit. Please try again.";
+			console.error("Error in form submission:", err);
 			setError(errorMessage);
 		} finally {
 			setIsSubmitting(false);
@@ -80,7 +83,10 @@ export default function HomePage() {
 
 					{/* Waitlist Form */}
 					<div className="max-w-md mx-auto">
-						<form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+						<form
+							onSubmit={handleSubmit}
+							className="flex flex-col sm:flex-row gap-3"
+						>
 							<Input
 								type="email"
 								placeholder="Your email address"
@@ -96,14 +102,22 @@ export default function HomePage() {
 								size="lg"
 								className="h-12 px-8 text-lg font-semibold hover:opacity-90 transition-opacity"
 								style={{
-									backgroundColor: isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
+									backgroundColor:
+										isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
 									color: "#21323B",
-									cursor: isTermsChecked && !isSubmitted && !isSubmitting ? "pointer" : "not-allowed",
+									cursor:
+										isTermsChecked && !isSubmitted && !isSubmitting
+											? "pointer"
+											: "not-allowed",
 									opacity: isTermsChecked && !isSubmitted ? 1 : 0.7,
 								}}
 								disabled={!isTermsChecked || isSubmitting || isSubmitted}
 							>
-								{isSubmitting ? 'Submitting...' : isSubmitted ? 'Thank you!' : 'Join Waitlist'}
+								{isSubmitting
+									? "Submitting..."
+									: isSubmitted
+									? "Thank you!"
+									: "Join Waitlist"}
 							</Button>
 						</form>
 						<div className="mt-4 flex items-start">
@@ -333,10 +347,10 @@ export default function HomePage() {
 									style={{ backgroundColor: "#F4F4F9" }}
 								>
 									<img
-									src="/GastonProfile.jfif"
-									alt="Gastón Arévalo"
-									className="w-full h-full object-cover rounded-full"
-								/>
+										src="/GastonProfile.jfif"
+										alt="Gastón Arévalo"
+										className="w-full h-full object-cover rounded-full"
+									/>
 								</div>
 
 								<h3
@@ -366,10 +380,10 @@ export default function HomePage() {
 									style={{ backgroundColor: "#F4F4F9" }}
 								>
 									<img
-									src="/JoaquinProfile.jpeg"
-									alt="Joaquín Luna"
-									className="w-full h-full object-cover rounded-full"
-								/>
+										src="/JoaquinProfile.webp"
+										alt="Joaquín Luna"
+										className="w-full h-full object-cover rounded-full"
+									/>
 								</div>
 								<h3
 									className="text-2xl font-bold mb-4"
@@ -412,7 +426,10 @@ export default function HomePage() {
 						</p>
 					</div>
 					<div className="max-w-md mx-auto">
-						<form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+						<form
+							onSubmit={handleSubmit}
+							className="flex flex-col sm:flex-row gap-3"
+						>
 							<Input
 								type="email"
 								placeholder="Your email address"
@@ -428,14 +445,22 @@ export default function HomePage() {
 								size="lg"
 								className="h-12 px-8 text-lg font-semibold hover:opacity-90 transition-opacity"
 								style={{
-									backgroundColor: isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
+									backgroundColor:
+										isTermsChecked && !isSubmitted ? "#B8DBD9" : "#586F7C",
 									color: "#21323B",
-									cursor: isTermsChecked && !isSubmitted && !isSubmitting ? "pointer" : "not-allowed",
+									cursor:
+										isTermsChecked && !isSubmitted && !isSubmitting
+											? "pointer"
+											: "not-allowed",
 									opacity: isTermsChecked && !isSubmitted ? 1 : 0.7,
 								}}
 								disabled={!isTermsChecked || isSubmitting || isSubmitted}
 							>
-								{isSubmitting ? 'Submitting...' : isSubmitted ? 'Thank you!' : 'Join Waitlist'}
+								{isSubmitting
+									? "Submitting..."
+									: isSubmitted
+									? "Thank you!"
+									: "Join Waitlist"}
 							</Button>
 						</form>
 						<div className="mt-4 flex items-start">
